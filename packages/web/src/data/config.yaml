@@ -8,117 +8,90 @@ profile:
   email: calvin@tribalorigin.com
 
 projects:
-  - id: e-commerce-platform
-    title: E-Commerce Platform
-    description: A full-stack e-commerce solution with real-time inventory management, payment processing, and an admin dashboard.
+  - id: stockcentral
+    title: StockCentral
+    description: A comprehensive financial market analytics platform featuring real-time S&P 500 heatmaps, Fear & Greed index, VIX tracking, IPO and earnings calendars, portfolio management, and interactive sector comparisons.
     tags:
       - React
-      - Node.js
-      - PostgreSQL
-      - Stripe
+      - TypeScript
+      - Financial Data
+      - Dashboard
     envLinks:
-      staging: https://staging.example.com
-      production: https://example.com
-    github: https://github.com
-    cover: /media/e-commerce-platform/cover.png
+      staging: https://staging-stockcentral.tribalorigin.com
+      production: https://stockcentral.tribalorigin.com
+    cover: /media/stockcentral/stockcentral-01.png
     media:
       - type: image
-        src: /media/e-commerce-platform/screenshot-1.png
+        src: /media/stockcentral/stockcentral-01.png
+        alt: Market Overview with S&P 500 Heat Map
+      - type: image
+        src: /media/stockcentral/stockcentral-02.png
         alt: Dashboard view
       - type: image
-        src: /media/e-commerce-platform/screenshot-2.png
-        alt: Product page
-
-  - id: task-management-app
-    title: Task Management App
-    description: Collaborative task manager with drag-and-drop boards, team assignments, and deadline tracking.
-    tags:
-      - TypeScript
-      - Next.js
-      - Prisma
-      - Tailwind CSS
-    envLinks:
-      staging: https://staging.example.com
-      production: https://example.com
-    github: https://github.com
-    cover: /media/task-management-app/cover.png
-    media:
+        src: /media/stockcentral/stockcentral-03.png
+        alt: Dashboard view
       - type: image
-        src: /media/task-management-app/board-view.png
-        alt: Kanban board view
-      - type: video
-        src: /media/task-management-app/demo.mp4
-        alt: App demo video
+        src: /media/stockcentral/stockcentral-04.png
+        alt: Dashboard view
+      - type: image
+        src: /media/stockcentral/stockcentral-05.png
+        alt: Dashboard view
+      - type: image
+        src: /media/stockcentral/stockcentral-06.png
+        alt: Dashboard view
+      - type: image
+        src: /media/stockcentral/stockcentral-07.png
+        alt: Dashboard view
+      - type: image
+        src: /media/stockcentral/stockcentral-08.png
+        alt: Dashboard view
+      - type: image
+        src: /media/stockcentral/stockcentral-09.png
+        alt: Dashboard view
+      - type: image
+        src: /media/stockcentral/stockcentral-10.png
+        alt: Dashboard view
+      - type: image
+        src: /media/stockcentral/stockcentral-11.png
+        alt: Dashboard view
+      - type: image
+        src: /media/stockcentral/stockcentral-12.png
+        alt: Dashboard view
 
-  - id: real-time-chat
-    title: Real-Time Chat Application
-    description: Secure messaging platform with end-to-end encryption, file sharing, and group chat capabilities.
+  - id: safetrack
+    title: SafeTrack
+    description: An employee safety and emergency response platform that provides real-time status tracking during critical incidents, team management, alert broadcasting, and organization-wide safety monitoring.
     tags:
       - React
-      - Socket.io
-      - Redis
-      - Docker
-    github: https://github.com
-    cover: /media/real-time-chat/cover.png
-    media:
-      - type: image
-        src: /media/real-time-chat/chat-interface.png
-        alt: Chat interface
-
-  - id: data-viz-dashboard
-    title: Data Visualization Dashboard
-    description: Interactive analytics dashboard for business intelligence with customizable charts and reporting.
-    tags:
-      - Vue.js
-      - D3.js
-      - Python
-      - FastAPI
-    envLinks:
-      staging: https://staging.example.com
-      production: https://example.com
-    cover: /media/data-viz-dashboard/cover.png
-    media:
-      - type: image
-        src: /media/data-viz-dashboard/charts.png
-        alt: Analytics charts
-      - type: image
-        src: /media/data-viz-dashboard/report-builder.png
-        alt: Report builder
-
-  - id: fitness-tracker
-    title: Mobile Fitness Tracker
-    description: Cross-platform mobile app for tracking workouts, nutrition, and health metrics with social features.
-    tags:
-      - React Native
-      - Firebase
       - TypeScript
-    github: https://github.com
-    cover: /media/fitness-tracker/cover.png
-    media:
-      - type: image
-        src: /media/fitness-tracker/workout-screen.png
-        alt: Workout tracking screen
-      - type: video
-        src: /media/fitness-tracker/app-preview.mp4
-        alt: App preview
-
-  - id: headless-cms
-    title: Content Management System
-    description: Headless CMS with markdown support, media library, and multi-language content localization.
-    tags:
-      - Next.js
-      - GraphQL
-      - MongoDB
-      - AWS
+      - Emergency Response
+      - Enterprise
     envLinks:
-      staging: https://staging.example.com
-      production: https://example.com
-    github: https://github.com
-    cover: /media/headless-cms/cover.png
+      staging: https://staging-safetrack.tribalorigin.com
+      production: https://safetrack.tribalorigin.com
+    cover: /media/safetrack/safetrack-01.png
     media:
       - type: image
-        src: /media/headless-cms/editor.png
-        alt: Content editor
+        src: /media/safetrack/safetrack-01.png
+        alt: Dashboard with active emergency event and employee status
       - type: image
-        src: /media/headless-cms/media-library.png
-        alt: Media library
+        src: /media/safetrack/safetrack-02.png
+        alt: SafeTrack interface
+      - type: image
+        src: /media/safetrack/safetrack-03.png
+        alt: SafeTrack interface
+      - type: image
+        src: /media/safetrack/safetrack-04.png
+        alt: SafeTrack interface
+      - type: image
+        src: /media/safetrack/safetrack-05.png
+        alt: SafeTrack interface
+      - type: image
+        src: /media/safetrack/safetrack-06.png
+        alt: SafeTrack interface
+      - type: image
+        src: /media/safetrack/safetrack-07.png
+        alt: SafeTrack interface
+      - type: image
+        src: /media/safetrack/safetrack-08.png
+        alt: SafeTrack interface
