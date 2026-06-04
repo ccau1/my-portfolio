@@ -17,8 +17,8 @@ projects:
       - Financial Data
       - Dashboard
     envLinks:
-      staging: https://staging-stockcentral.tribalorigin.com
-      production: https://stockcentral.tribalorigin.com
+      staging: https://stocks.staging.tribalorigin.com
+      production: https://stocks.tribalorigin.com
     cover: /media/stockcentral/stockcentral-01.png
     media:
       - type: image
@@ -67,7 +67,7 @@ projects:
       - Emergency Response
       - Enterprise
     envLinks:
-      staging: https://staging-safetrack.tribalorigin.com
+      staging: https://safetrack.staging.tribalorigin.com
       production: https://safetrack.tribalorigin.com
     cover: /media/safetrack/safetrack-01.png
     media:
