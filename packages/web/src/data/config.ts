@@ -16,6 +16,7 @@ export interface Project {
   github?: string;
   cover?: string;
   media?: MediaItem[];
+  envLinks?: Record<string, string>;
 }
 
 export interface Profile {
@@ -49,7 +50,6 @@ function loadConfig(): Config {
   for (const project of raw.projects) {
     if (project.envLinks) {
       project.link = project.envLinks[env] || project.envLinks['production'] || undefined;
-      delete project.envLinks;
     }
   }
 

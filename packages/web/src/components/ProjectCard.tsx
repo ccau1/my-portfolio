@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Project } from '../data/config';
+import { ProjectDetailPanel } from './ProjectDetailPanel';
 
 interface ProjectCardProps {
   project: Project;
@@ -7,23 +8,18 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
-  const [showGallery, setShowGallery] = useState(false);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
   const hasMedia = project.media && project.media.length > 0;
   const hasCover = !!project.cover;
-  const isFeatured = index === 0;
 
   return (
     <>
       <article
-        className={`project-card group relative overflow-hidden cursor-pointer ${
-          isFeatured ? 'md:col-span-2 md:row-span-2' : ''
-        }`}
-        onClick={() => hasMedia && setShowGallery(true)}
+        className="project-card group relative overflow-hidden cursor-pointer"
+        onClick={() => setIsPanelOpen(true)}
       >
         {/* Image container */}
-        <div className={`relative overflow-hidden bg-[var(--surface)] ${
-          isFeatured ? 'aspect-[16/10]' : 'aspect-[4/3]'
-        }`}>
+        <div className="relative overflow-hidden bg-[var(--surface)] aspect-[16/10]">
           {hasCover ? (
             <img
               src={project.cover}
@@ -52,9 +48,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 {String(index + 1).padStart(2, '0')} — {project.tags[0]}
               </span>
               <h3
-                className={`font-bold text-[var(--text)] mb-2 ${
-                  isFeatured ? 'text-3xl md:text-4xl' : 'text-xl md:text-2xl'
-                }`}
+                className="font-bold text-[var(--text)] mb-2 text-xl md:text-2xl"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 {project.title}
@@ -110,66 +104,12 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         </div>
       </article>
 
-      {/* Gallery Modal */}
-      {showGallery && hasMedia && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-[var(--bg)]/95 backdrop-blur-md"
-          onClick={() => setShowGallery(false)}
-        >
-          <div
-            className="relative max-w-5xl w-full max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setShowGallery(false)}
-              className="fixed top-6 right-6 z-10 p-3 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            <div className="mb-8">
-              <span className="section-number block mb-3">{project.title}</span>
-              <h3
-                className="text-3xl md:text-4xl font-bold text-[var(--text)]"
-                style={{ fontFamily: 'var(--font-heading)' }}
-              >
-                Media Gallery
-              </h3>
-            </div>
-
-            <div className="space-y-6">
-              {project.media!.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="border border-[var(--border)] bg-[var(--surface)]"
-                >
-                  {item.type === 'video' ? (
-                    <video
-                      src={item.src}
-                      controls
-                      className="w-full"
-                      preload="metadata"
-                      poster={project.cover}
-                    />
-                  ) : (
-                    <img
-                      src={item.src}
-                      alt={item.alt}
-                      className="w-full"
-                      loading="lazy"
-                    />
-                  )}
-                  <p className="text-sm text-[var(--text-muted)] px-5 py-4 border-t border-[var(--border)]">
-                    {item.alt}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Detail Panel */}
+      <ProjectDetailPanel
+        project={project}
+        isOpen={isPanelOpen}
+        onClose={() => setIsPanelOpen(false)}
+      />
     </>
   );
 }
