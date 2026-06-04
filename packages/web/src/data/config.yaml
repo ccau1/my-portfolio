@@ -1,0 +1,116 @@
+profile:
+  name: Calvin Au
+  role: Software Engineer · Tech Lead · DevOps & Platform
+  tagline: Hi, I'm Calvin
+  bio: Software engineer, DevOps and platform engineer, tech lead, system analyst, and infrastructure architect. I design, build, and operate reliable systems that bridge product needs with solid engineering foundations.
+  github: https://github.com/ccau1
+  linkedin: https://www.linkedin.com/in/calvin-au-75646149/
+  email: calvin@tribalorigin.com
+
+projects:
+  - id: e-commerce-platform
+    title: E-Commerce Platform
+    description: A full-stack e-commerce solution with real-time inventory management, payment processing, and an admin dashboard.
+    tags:
+      - React
+      - Node.js
+      - PostgreSQL
+      - Stripe
+    link: https://example.com
+    github: https://github.com
+    cover: /media/e-commerce-platform/cover.png
+    media:
+      - type: image
+        src: /media/e-commerce-platform/screenshot-1.png
+        alt: Dashboard view
+      - type: image
+        src: /media/e-commerce-platform/screenshot-2.png
+        alt: Product page
+
+  - id: task-management-app
+    title: Task Management App
+    description: Collaborative task manager with drag-and-drop boards, team assignments, and deadline tracking.
+    tags:
+      - TypeScript
+      - Next.js
+      - Prisma
+      - Tailwind CSS
+    link: https://example.com
+    github: https://github.com
+    cover: /media/task-management-app/cover.png
+    media:
+      - type: image
+        src: /media/task-management-app/board-view.png
+        alt: Kanban board view
+      - type: video
+        src: /media/task-management-app/demo.mp4
+        alt: App demo video
+
+  - id: real-time-chat
+    title: Real-Time Chat Application
+    description: Secure messaging platform with end-to-end encryption, file sharing, and group chat capabilities.
+    tags:
+      - React
+      - Socket.io
+      - Redis
+      - Docker
+    github: https://github.com
+    cover: /media/real-time-chat/cover.png
+    media:
+      - type: image
+        src: /media/real-time-chat/chat-interface.png
+        alt: Chat interface
+
+  - id: data-viz-dashboard
+    title: Data Visualization Dashboard
+    description: Interactive analytics dashboard for business intelligence with customizable charts and reporting.
+    tags:
+      - Vue.js
+      - D3.js
+      - Python
+      - FastAPI
+    link: https://example.com
+    cover: /media/data-viz-dashboard/cover.png
+    media:
+      - type: image
+        src: /media/data-viz-dashboard/charts.png
+        alt: Analytics charts
+      - type: image
+        src: /media/data-viz-dashboard/report-builder.png
+        alt: Report builder
+
+  - id: fitness-tracker
+    title: Mobile Fitness Tracker
+    description: Cross-platform mobile app for tracking workouts, nutrition, and health metrics with social features.
+    tags:
+      - React Native
+      - Firebase
+      - TypeScript
+    github: https://github.com
+    cover: /media/fitness-tracker/cover.png
+    media:
+      - type: image
+        src: /media/fitness-tracker/workout-screen.png
+        alt: Workout tracking screen
+      - type: video
+        src: /media/fitness-tracker/app-preview.mp4
+        alt: App preview
+
+  - id: headless-cms
+    title: Content Management System
+    description: Headless CMS with markdown support, media library, and multi-language content localization.
+    tags:
+      - Next.js
+      - GraphQL
+      - MongoDB
+      - AWS
+    link: https://example.com
+    github: https://github.com
+    cover: /media/headless-cms/cover.png
+    media:
+      - type: image
+        src: /media/headless-cms/editor.png
+        alt: Content editor
+      - type: image
+        src: /media/headless-cms/media-library.png
+        alt: Media library

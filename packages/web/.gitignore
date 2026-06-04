@@ -1,0 +1,14 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+dist-ssr
+
+# Environment
+*.local
+.env
+
+# Vite
+.vite
+.vite-temp
