@@ -1,4 +1,4 @@
-.PHONY: up down logs build shell clean dev dev-down dev-logs
+.PHONY: up down logs build shell clean dev dev-down dev-logs deploy-staging deploy-prod down-staging down-prod
 
 up:
 	docker compose up --build -d
@@ -26,3 +26,15 @@ dev-down:
 
 dev-logs:
 	docker compose -f docker-compose.dev.yml logs -f web
+
+deploy-staging:
+	docker compose --env-file .env.staging up --build -d
+
+down-staging:
+	docker compose --env-file .env.staging down
+
+deploy-prod:
+	docker compose --env-file .env.prod up --build -d
+
+down-prod:
+	docker compose --env-file .env.prod down

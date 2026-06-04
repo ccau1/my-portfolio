@@ -16,7 +16,9 @@ projects:
       - Node.js
       - PostgreSQL
       - Stripe
-    link: https://example.com
+    envLinks:
+      staging: https://staging.example.com
+      production: https://example.com
     github: https://github.com
     cover: /media/e-commerce-platform/cover.png
     media:
@@ -35,7 +37,9 @@ projects:
       - Next.js
       - Prisma
       - Tailwind CSS
-    link: https://example.com
+    envLinks:
+      staging: https://staging.example.com
+      production: https://example.com
     github: https://github.com
     cover: /media/task-management-app/cover.png
     media:
@@ -69,7 +73,9 @@ projects:
       - D3.js
       - Python
       - FastAPI
-    link: https://example.com
+    envLinks:
+      staging: https://staging.example.com
+      production: https://example.com
     cover: /media/data-viz-dashboard/cover.png
     media:
       - type: image
@@ -104,7 +110,9 @@ projects:
       - GraphQL
       - MongoDB
       - AWS
-    link: https://example.com
+    envLinks:
+      staging: https://staging.example.com
+      production: https://example.com
     github: https://github.com
     cover: /media/headless-cms/cover.png
     media:

@@ -33,8 +33,27 @@ export interface Config {
   projects: Project[];
 }
 
+interface RawProject extends Project {
+  envLinks?: Record<string, string>;
+}
+
+interface RawConfig {
+  profile: Profile;
+  projects: RawProject[];
+}
+
 function loadConfig(): Config {
-  return yaml.load(configYaml) as Config;
+  const raw = yaml.load(configYaml) as RawConfig;
+  const env = __DEPLOY_ENV__;
+
+  for (const project of raw.projects) {
+    if (project.envLinks) {
+      project.link = project.envLinks[env] || project.envLinks['production'] || undefined;
+      delete project.envLinks;
+    }
+  }
+
+  return raw as Config;
 }
 
 export const config = loadConfig();

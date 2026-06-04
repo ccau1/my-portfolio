@@ -3,7 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NODE_ENV: ${NODE_ENV:-production}
     container_name: portfolio-web
     ports:
-      - "8020:80"
+      - "${PORT:-8020}:80"
     restart: unless-stopped
