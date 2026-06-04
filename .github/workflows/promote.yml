@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       image_tag:
-        description: 'Image tag to promote (e.g., staging, staging-abc123, latest)'
+        description: 'Image tag to promote (e.g., staging, staging-abc123)'
         required: true
         default: 'staging'
       confirm:
@@ -26,6 +26,7 @@ env:
 jobs:
   promote:
     runs-on: ubuntu-latest
+    environment: production
     if: ${{ github.event.inputs.confirm == 'promote' }}
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +36,7 @@ jobs:
           mkdir -p deploy
           cat > deploy/.env <<EOF
           DOMAIN_PROD=tribalorigin.com
-          ${{ secrets.ENV_FILE }}
+          $(printf '%s\n' "${{ secrets.ENV_FILE }}" | grep -vi '^[[:space:]]*APP_IMAGE=')
           EOF
 
       - name: Copy compose & nginx to prod server
