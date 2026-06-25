@@ -68,7 +68,7 @@ projects:
       - Enterprise
     envLinks:
       staging: https://safetrack.staging.tribalorigin.com
-      production: https://safetrack.tribalorigin.com
+      production: https://safetrack.staging.tribalorigin.com
     cover: /media/safetrack/safetrack-01.png
     media:
       - type: image
