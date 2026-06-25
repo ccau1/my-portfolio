@@ -95,3 +95,49 @@ projects:
       - type: image
         src: /media/safetrack/safetrack-08.png
         alt: SafeTrack interface
+
+  - id: llvan
+    title: LLVan
+    description: A structured way to manage LLM agents, teams, RAG, A2A, MCP and other LLM agent orchestration patterns. It provides a framework for building and managing LLM agents, enabling developers to create complex workflows and interactions between agents.
+    tags:
+      - React
+      - TypeScript
+      - Enterprise
+    envLinks:
+      staging: https://llvan.staging.tribalorigin.com
+      production: https://llvan.staging.tribalorigin.com
+    cover: /media/llvan/llvan-01.png
+    media:
+      - type: image
+        src: /media/llvan/llvan-01.png
+        alt: LLVan interface
+      - type: image
+        src: /media/llvan/llvan-02.png
+        alt: LLVan interface
+      - type: image
+        src: /media/llvan/llvan-03.png
+        alt: LLVan interface
+      - type: image
+        src: /media/llvan/llvan-04.png
+        alt: LLVan interface
+      - type: image
+        src: /media/llvan/llvan-05.png
+        alt: LLVan interface
+      - type: image
+        src: /media/llvan/llvan-06.png
+        alt: LLVan interface
+      - type: image
+        src: /media/llvan/llvan-07.png
+        alt: LLVan interface
+      - type: image
+        src: /media/llvan/llvan-08.png
+        alt: LLVan interface
+      - type: image
+        src: /media/llvan/llvan-09.png
+        alt: LLVan interface
+      - type: image
+        src: /media/llvan/llvan-10.png
+        alt: LLVan interface
+      - type: image
+        src: /media/llvan/llvan-11.png
+        alt: LLVan interface
