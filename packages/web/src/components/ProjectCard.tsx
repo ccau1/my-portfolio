@@ -15,7 +15,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   return (
     <>
       <article
-        className="project-card group relative overflow-hidden cursor-pointer"
+        className="project-card group cursor-pointer border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-hover)] transition-colors duration-300"
         onClick={() => setIsPanelOpen(true)}
       >
         {/* Image container */}
@@ -38,68 +38,69 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             </div>
           )}
 
-          {/* Hover overlay */}
-          <div className="project-card-overlay absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
+          {/* Subtle bottom gradient for visual anchoring */}
+          <div className="project-card-overlay absolute inset-0 bg-gradient-to-t from-[var(--bg)]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
 
-          {/* Content overlay */}
-          <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end">
-            <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-              <span className="section-number block mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                {String(index + 1).padStart(2, '0')} — {project.tags[0]}
-              </span>
-              <h3
-                className="font-bold text-[var(--text)] mb-2 text-xl md:text-2xl"
-                style={{ fontFamily: 'var(--font-heading)' }}
+        {/* Content below the image */}
+        <div className="p-5 md:p-6">
+          <div className="flex items-baseline justify-between gap-4 mb-3">
+            <h3
+              className="font-bold text-[var(--text)] text-lg md:text-xl leading-tight"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              {project.title}
+            </h3>
+            <span className="section-number shrink-0 text-[var(--text-dim)]">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+          </div>
+
+          <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4 line-clamp-2">
+            {project.description}
+          </p>
+
+          {/* Tags row */}
+          <div className="flex flex-wrap gap-2 mb-5">
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-2.5 py-1 text-xs font-medium tracking-wide border border-[var(--border)] text-[var(--text-muted)]"
               >
-                {project.title}
-              </h3>
-              <p className="text-sm text-[var(--text-muted)] max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                {project.description}
-              </p>
-            </div>
+                {tag}
+              </span>
+            ))}
+          </div>
 
-            {/* Tags row */}
-            <div className="flex flex-wrap gap-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 text-xs font-medium tracking-wide border border-[var(--border)] text-[var(--text-muted)]"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            {/* Links */}
-            <div className="flex items-center gap-6 mt-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
-              {project.link && (
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors link-hover"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Live Demo
-                </a>
-              )}
-              {project.github && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors link-hover"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Source
-                </a>
-              )}
-              {hasMedia && (
-                <span className="text-sm font-medium text-[var(--text-muted)]">
-                  {project.media!.length} media
-                </span>
-              )}
-            </div>
+          {/* Links */}
+          <div className="flex items-center gap-5">
+            {project.link && (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors link-hover"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Live Demo
+              </a>
+            )}
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors link-hover"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Source
+              </a>
+            )}
+            {hasMedia && (
+              <span className="text-sm font-medium text-[var(--text-dim)]">
+                {project.media!.length} media
+              </span>
+            )}
           </div>
         </div>
       </article>

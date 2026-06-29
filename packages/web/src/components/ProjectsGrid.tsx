@@ -8,7 +8,7 @@ interface ProjectsGridProps {
 export function ProjectsGrid({ projects }: ProjectsGridProps) {
   return (
     <section id="projects" className="relative px-6 py-32 md:py-40">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-6xl">
         {/* Section header */}
         <div className="reveal mb-20 md:mb-28">
           <div className="flex items-end justify-between gap-8 mb-8">
@@ -29,12 +29,10 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
         </div>
 
         {/* Projects grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[var(--border)]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {projects.map((project, index) => (
-            <div key={project.id} className="bg-[var(--bg)]">
-              <div className={`reveal reveal-delay-${Math.min(index + 1, 6)}`}>
-                <ProjectCard project={project} index={index} />
-              </div>
+            <div key={project.id} className={`reveal reveal-delay-${Math.min(index + 1, 6)}`}>
+              <ProjectCard project={project} index={index} />
             </div>
           ))}
         </div>
