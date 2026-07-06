@@ -40,8 +40,8 @@ fi
 
 # Start services
 cd deploy
-docker compose -f docker-compose.prod.yml down
-docker compose -f docker-compose.prod.yml up --build -d
+docker compose -f docker-compose.prod-standalone.yml down
+docker compose -f docker-compose.prod-standalone.yml up --build -d
 
 echo "=== Setup complete ==="
 echo "App should be available at http://$(curl -s ifconfig.me)"

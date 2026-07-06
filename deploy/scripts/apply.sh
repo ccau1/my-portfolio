@@ -30,11 +30,15 @@ fi
 
 ENV="${ENV:-prod}"
 PROJECT_NAME="${PROJECT_NAME:-$(basename "$ROOT_DIR")}"
-TF_DIR="$DEPLOY_DIR/terraform/environments/$ENV"
+
+# Map prod-standalone to the legacy prod Terraform directory
+TF_ENV="$ENV"
+[ "$TF_ENV" = "prod-standalone" ] && TF_ENV="prod"
+TF_DIR="$DEPLOY_DIR/terraform/environments/$TF_ENV"
 
 if [ ! -d "$TF_DIR" ]; then
   echo "❌ Terraform environment not found: $TF_DIR"
-  echo "   Create it first: cp -r $DEPLOY_DIR/terraform/environments/prod $TF_DIR"
+  echo "   Create it first: cp -r $DEPLOY_DIR/terraform/environments/prod $DEPLOY_DIR/terraform/environments/$ENV"
   exit 1
 fi
 

@@ -2,7 +2,8 @@
 # CONFIG — Edit these values when copying to another repo
 # =============================================================================
 # Domain:     tribalorigin.com
-# Server dir: /opt/tribaloriginlanding
+# Server dir: /opt/tribaloriginlanding-prod  (shared)
+#             /opt/tribaloriginlanding-prod-standalone  (standalone)
 # =============================================================================
 
 name: Promote Staging → Prod
@@ -14,6 +15,14 @@ on:
         description: 'Image tag to promote (e.g., staging, staging-abc123)'
         required: true
         default: 'staging'
+      deployment_target:
+        description: 'Production deployment target'
+        required: true
+        default: 'shared'
+        type: choice
+        options:
+          - shared
+          - standalone
       confirm:
         description: 'Type "promote" to confirm deployment to production'
         required: true
@@ -39,50 +48,29 @@ jobs:
           $(printf '%s\n' "${{ secrets.ENV_FILE }}" | grep -vi '^[[:space:]]*APP_IMAGE=')
           EOF
 
-      - name: Copy compose & nginx to prod server
+      # ── Shared production server (default) ────────────────────────
+
+      - name: Copy compose & nginx to shared prod server
+        if: ${{ github.event.inputs.deployment_target != 'standalone' }}
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.HETZNER_HOST }}
-          username: ${{ secrets.HETZNER_USER }}
-          key: ${{ secrets.HETZNER_SSH_KEY }}
-          source: "deploy/docker-compose.prod.yml,deploy/.env,deploy/nginx.ssl.conf"
-          target: "/opt/tribaloriginlanding"
+          host: ${{ secrets.PROD_HETZNER_HOST }}
+          username: ${{ secrets.PROD_HETZNER_USER }}
+          key: ${{ secrets.PROD_HETZNER_SSH_KEY }}
+          source: "deploy/docker-compose.prod.yml,deploy/.env,deploy/nginx.dev.conf"
+          target: "/opt/tribaloriginlanding-prod"
           strip_components: 1
 
-      - name: Check for SSL cert secrets
-        id: certs
-        run: |
-          if [ -n "${{ secrets.CF_ORIGIN_CERT }}" ]; then
-            echo "has_certs=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_certs=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Ensure SSL certs on prod server
-        if: steps.certs.outputs.has_certs == 'true'
+      - name: Deploy promoted image to shared prod
+        if: ${{ github.event.inputs.deployment_target != 'standalone' }}
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.HETZNER_HOST }}
-          username: ${{ secrets.HETZNER_USER }}
-          key: ${{ secrets.HETZNER_SSH_KEY }}
-          envs: CF_ORIGIN_CERT,CF_ORIGIN_KEY
+          host: ${{ secrets.PROD_HETZNER_HOST }}
+          username: ${{ secrets.PROD_HETZNER_USER }}
+          key: ${{ secrets.PROD_HETZNER_SSH_KEY }}
           script: |
             set -e
-            mkdir -p /opt/tribaloriginlanding/ssl
-            printf '%s\n' "$CF_ORIGIN_CERT" > /opt/tribaloriginlanding/ssl/cloudflare-origin.pem
-            printf '%s\n' "$CF_ORIGIN_KEY" > /opt/tribaloriginlanding/ssl/cloudflare-origin.key
-            chmod 600 /opt/tribaloriginlanding/ssl/cloudflare-origin.key
-            chmod 644 /opt/tribaloriginlanding/ssl/cloudflare-origin.pem
-
-      - name: Deploy promoted image to prod
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.HETZNER_HOST }}
-          username: ${{ secrets.HETZNER_USER }}
-          key: ${{ secrets.HETZNER_SSH_KEY }}
-          script: |
-            set -e
-            cd /opt/tribaloriginlanding
+            cd /opt/tribaloriginlanding-prod
 
             # Authenticate to GHCR so the server can pull private images
             echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -96,6 +84,73 @@ jobs:
             echo "Container status:"
             docker compose -f docker-compose.prod.yml ps
             docker compose -f docker-compose.prod.yml logs --tail 30
+
+            # Prune old dangling images to save disk
+            docker image prune -af
+            docker system prune -f
+
+      # ── Standalone production server (future/legacy) ──────────────
+
+      - name: Copy compose & nginx to standalone prod server
+        if: ${{ github.event.inputs.deployment_target == 'standalone' }}
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.PROD_STANDALONE_HETZNER_HOST }}
+          username: ${{ secrets.PROD_STANDALONE_HETZNER_USER }}
+          key: ${{ secrets.PROD_STANDALONE_HETZNER_SSH_KEY }}
+          source: "deploy/docker-compose.prod-standalone.yml,deploy/.env,deploy/nginx.prod-standalone.conf"
+          target: "/opt/tribaloriginlanding-prod-standalone"
+          strip_components: 1
+
+      - name: Check for SSL cert secrets
+        if: ${{ github.event.inputs.deployment_target == 'standalone' }}
+        id: certs
+        run: |
+          if [ -n "${{ secrets.CF_ORIGIN_CERT }}" ]; then
+            echo "has_certs=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_certs=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Ensure SSL certs on standalone prod server
+        if: ${{ github.event.inputs.deployment_target == 'standalone' && steps.certs.outputs.has_certs == 'true' }}
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_STANDALONE_HETZNER_HOST }}
+          username: ${{ secrets.PROD_STANDALONE_HETZNER_USER }}
+          key: ${{ secrets.PROD_STANDALONE_HETZNER_SSH_KEY }}
+          envs: CF_ORIGIN_CERT,CF_ORIGIN_KEY
+          script: |
+            set -e
+            mkdir -p /opt/tribaloriginlanding-prod-standalone/ssl
+            printf '%s\n' "$CF_ORIGIN_CERT" > /opt/tribaloriginlanding-prod-standalone/ssl/cloudflare-origin.pem
+            printf '%s\n' "$CF_ORIGIN_KEY" > /opt/tribaloriginlanding-prod-standalone/ssl/cloudflare-origin.key
+            chmod 600 /opt/tribaloriginlanding-prod-standalone/ssl/cloudflare-origin.key
+            chmod 644 /opt/tribaloriginlanding-prod-standalone/ssl/cloudflare-origin.pem
+
+      - name: Deploy promoted image to standalone prod
+        if: ${{ github.event.inputs.deployment_target == 'standalone' }}
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_STANDALONE_HETZNER_HOST }}
+          username: ${{ secrets.PROD_STANDALONE_HETZNER_USER }}
+          key: ${{ secrets.PROD_STANDALONE_HETZNER_SSH_KEY }}
+          script: |
+            set -e
+            cd /opt/tribaloriginlanding-prod-standalone
+
+            # Authenticate to GHCR so the server can pull private images
+            echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Set image reference to the promoted tag and pull
+            export APP_IMAGE="${{ env.IMAGE_BASE }}:${{ github.event.inputs.image_tag }}"
+            docker compose -f docker-compose.prod-standalone.yml pull
+            docker compose -f docker-compose.prod-standalone.yml up -d
+
+            # Verify container status
+            echo "Container status:"
+            docker compose -f docker-compose.prod-standalone.yml ps
+            docker compose -f docker-compose.prod-standalone.yml logs --tail 30
 
             # Prune old dangling images to save disk
             docker image prune -af

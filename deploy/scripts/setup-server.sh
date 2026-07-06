@@ -66,8 +66,8 @@ ssh -i "$SSH_KEY" -o StrictHostKeyChecking=accept-new -o ConnectTimeout=10 "${US
     echo "✅ Docker network '${NETWORK_NAME}' already exists"
   fi
 
-  # Setup Traefik for dev/staging
-  if [ "${ENV}" != "prod" ]; then
+  # Setup Traefik for shared environments (prod, staging, dev)
+  if [ "${ENV}" != "prod-standalone" ]; then
     TRAEFIK_DIR="/opt/traefik"
     mkdir -p \${TRAEFIK_DIR}/letsencrypt
 
@@ -83,11 +83,11 @@ ssh -i "$SSH_KEY" -o StrictHostKeyChecking=accept-new -o ConnectTimeout=10 "${US
 REMOTE_SCRIPT
 
 # ── Copy Traefik config for dev/staging ────────────────────────
-if [ "$ENV" != "prod" ]; then
+if [ "$ENV" != "prod-standalone" ]; then
   TRAEFIK_LOCAL="$DEPLOY_DIR/traefik"
   if [ ! -d "$TRAEFIK_LOCAL" ]; then
     echo "⚠️  deploy/traefik/ not found. Skipping Traefik setup."
-    echo "   For dev/staging, create deploy/traefik/ with docker-compose.yml and traefik.yml"
+    echo "   For shared environments, create deploy/traefik/ with docker-compose.yml and traefik.yml"
     exit 0
   fi
 

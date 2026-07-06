@@ -32,7 +32,7 @@ help: ## Show all available commands
 	@echo ""
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  $(BLUE)%-18s$(RESET) %s\n", $$1, $$2}'
 	@echo ""
-	@echo "$(YELLOW)Environment variable: ENV=prod|staging|...$(RESET)"
+	@echo "$(YELLOW)Environment variable: ENV=prod|prod-standalone|staging|...$(RESET)"
 	@echo ""
 
 # ── SSH Key ────────────────────────────────────────────────────

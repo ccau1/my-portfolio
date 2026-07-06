@@ -60,7 +60,10 @@ if [ ! -f "$TF_VAR_ssh_public_key_path" ]; then
   exit 1
 fi
 
-TF_DIR="$DEPLOY_DIR/terraform/environments/$ENV"
+# Map prod-standalone to the legacy prod Terraform directory
+TF_ENV="$ENV"
+[ "$TF_ENV" = "prod-standalone" ] && TF_ENV="prod"
+TF_DIR="$DEPLOY_DIR/terraform/environments/$TF_ENV"
 
 if [ ! -d "$TF_DIR" ]; then
   echo "❌ Terraform environment not found: $TF_DIR"
