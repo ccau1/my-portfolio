@@ -1,10 +1,10 @@
 resource "hcloud_ssh_key" "deploy" {
-  name       = "tribaloriginlanding-deploy"
+  name       = "my-portfolio-deploy"
   public_key = file(var.ssh_public_key_path)
 }
 
 resource "hcloud_firewall" "web" {
-  name = "tribaloriginlanding-firewall"
+  name = "my-portfolio-firewall"
 
   rule {
     direction   = "in"
@@ -32,7 +32,7 @@ resource "hcloud_firewall" "web" {
 }
 
 resource "hcloud_server" "app" {
-  name         = "tribaloriginlanding"
+  name         = "my-portfolio"
   server_type  = var.server_type
   image        = "ubuntu-24.04"
   location     = var.location
@@ -41,7 +41,7 @@ resource "hcloud_server" "app" {
   backups      = var.enable_backups
 
   labels = {
-    app = "tribaloriginlanding"
+    app = "my-portfolio"
   }
 
   # Bootstrap Docker and create app directory
@@ -53,18 +53,34 @@ resource "hcloud_server" "app" {
     runcmd:
       - curl -fsSL https://get.docker.com | sh
       - usermod -aG docker root
-      - mkdir -p /opt/tribaloriginlanding
+      - mkdir -p /opt/my-portfolio
       - systemctl enable --now docker
   EOF
 }
 
 # ── Cloudflare DNS Records ─────────────────────────────────────
 
-resource "cloudflare_record" "app" {
+moved {
+  from = cloudflare_record.app
+  to   = cloudflare_record.root
+}
+
+resource "cloudflare_record" "root" {
   count = var.cloudflare_zone_id != "" ? 1 : 0
 
   zone_id = var.cloudflare_zone_id
   name    = "@"
+  type    = "A"
+  content = hcloud_server.app.ipv4_address
+  ttl     = 1
+  proxied = var.cloudflare_proxied
+}
+
+resource "cloudflare_record" "portfolio" {
+  count = var.cloudflare_zone_id != "" ? 1 : 0
+
+  zone_id = var.cloudflare_zone_id
+  name    = "portfolio"
   type    = "A"
   content = hcloud_server.app.ipv4_address
   ttl     = 1
@@ -86,7 +102,7 @@ resource "tls_cert_request" "app" {
   private_key_pem = tls_private_key.app[0].private_key_pem
 
   subject {
-    common_name = "tribalorigin.com"
+    common_name = "portfolio.tribalorigin.com"
   }
 }
 
@@ -94,7 +110,7 @@ resource "cloudflare_origin_ca_certificate" "app" {
   count = var.cloudflare_zone_id != "" ? 1 : 0
 
   csr                = tls_cert_request.app[0].cert_request_pem
-  hostnames          = ["tribalorigin.com"]
+  hostnames          = ["portfolio.tribalorigin.com", "tribalorigin.com"]
   request_type       = "origin-rsa"
   requested_validity = 5475 # 15 years
 }

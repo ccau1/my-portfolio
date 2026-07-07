@@ -2,8 +2,8 @@
 # CONFIG — Edit these values when copying to another repo
 # =============================================================================
 # Branch:     develop
-# Domain:     dev.tribalorigin.com
-# Server dir: /opt/tribaloriginlanding-dev
+# Domain:     portfolio.dev.tribalorigin.com
+# Server dir: /opt/my-portfolio-dev
 # =============================================================================
 
 name: Build & Deploy to Dev
@@ -65,7 +65,7 @@ jobs:
         run: |
           mkdir -p deploy
           cat > deploy/.env <<EOF
-          DOMAIN_DEV=dev.tribalorigin.com
+          DOMAIN_DEV=portfolio.dev.tribalorigin.com
           ${{ secrets.ENV_FILE }}
           EOF
 
@@ -76,7 +76,7 @@ jobs:
           username: ${{ secrets.DEV_HETZNER_USER }}
           key: ${{ secrets.DEV_HETZNER_SSH_KEY }}
           source: "deploy/docker-compose.dev.yml,deploy/.env,deploy/nginx.dev.conf"
-          target: "/opt/tribaloriginlanding-dev"
+          target: "/opt/my-portfolio-dev"
           strip_components: 1
 
       - name: Deploy on dev server
@@ -87,7 +87,7 @@ jobs:
           key: ${{ secrets.DEV_HETZNER_SSH_KEY }}
           script: |
             set -e
-            cd /opt/tribaloriginlanding-dev
+            cd /opt/my-portfolio-dev
 
             # Authenticate to GHCR so the server can pull private images
             echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -103,7 +103,7 @@ jobs:
 
       - name: Health check (dev)
         run: |
-          HEALTH_URL="https://dev.tribalorigin.com"
+          HEALTH_URL="https://portfolio.dev.tribalorigin.com"
           echo "Testing dev site: $HEALTH_URL"
           echo "Waiting for containers to start..."
           for i in {1..12}; do

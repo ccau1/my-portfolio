@@ -2,8 +2,8 @@
 # CONFIG — Edit these values when copying to another repo
 # =============================================================================
 # Branch:     main
-# Domain:     staging.tribalorigin.com
-# Server dir: /opt/tribaloriginlanding-staging
+# Domain:     portfolio.staging.tribalorigin.com
+# Server dir: /opt/my-portfolio-staging
 # =============================================================================
 
 name: Build & Deploy to Staging
@@ -74,7 +74,7 @@ jobs:
         run: |
           mkdir -p deploy
           cat > deploy/.env <<EOF
-          DOMAIN_STAGING=staging.tribalorigin.com
+          DOMAIN_STAGING=portfolio.staging.tribalorigin.com
           $(printf '%s\n' "${{ secrets.ENV_FILE }}" | grep -vi '^[[:space:]]*APP_IMAGE=')
           EOF
 
@@ -85,7 +85,7 @@ jobs:
           username: ${{ secrets.STAGING_HETZNER_USER }}
           key: ${{ secrets.STAGING_HETZNER_SSH_KEY }}
           source: "deploy/docker-compose.staging.yml,deploy/.env,deploy/nginx.dev.conf"
-          target: "/opt/tribaloriginlanding-staging"
+          target: "/opt/my-portfolio-staging"
           strip_components: 1
 
       - name: Deploy on staging server
@@ -96,7 +96,7 @@ jobs:
           key: ${{ secrets.STAGING_HETZNER_SSH_KEY }}
           script: |
             set -e
-            cd /opt/tribaloriginlanding-staging
+            cd /opt/my-portfolio-staging
 
             # Authenticate to GHCR so the server can pull private images
             echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -117,7 +117,7 @@ jobs:
 
       - name: Health check (staging)
         run: |
-          HEALTH_URL="https://staging.tribalorigin.com"
+          HEALTH_URL="https://portfolio.staging.tribalorigin.com"
           echo "Testing staging site: $HEALTH_URL"
           echo "Waiting for containers to start..."
           for i in {1..12}; do
@@ -152,7 +152,7 @@ jobs:
         run: |
           mkdir -p deploy
           cat > deploy/.env <<EOF
-          DOMAIN_PROD=tribalorigin.com
+          DOMAIN_PROD=portfolio.tribalorigin.com
           $(printf '%s\n' "${{ secrets.ENV_FILE }}" | grep -vi '^[[:space:]]*APP_IMAGE=')
           EOF
 
@@ -166,7 +166,7 @@ jobs:
           username: ${{ secrets.PROD_HETZNER_USER }}
           key: ${{ secrets.PROD_HETZNER_SSH_KEY }}
           source: "deploy/docker-compose.prod.yml,deploy/.env,deploy/nginx.dev.conf"
-          target: "/opt/tribaloriginlanding-prod"
+          target: "/opt/my-portfolio-prod"
           strip_components: 1
 
       - name: Deploy promoted image to shared prod
@@ -178,7 +178,7 @@ jobs:
           key: ${{ secrets.PROD_HETZNER_SSH_KEY }}
           script: |
             set -e
-            cd /opt/tribaloriginlanding-prod
+            cd /opt/my-portfolio-prod
 
             # Authenticate to GHCR so the server can pull private images
             echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -202,7 +202,7 @@ jobs:
           username: ${{ secrets.PROD_STANDALONE_HETZNER_USER }}
           key: ${{ secrets.PROD_STANDALONE_HETZNER_SSH_KEY }}
           source: "deploy/docker-compose.prod-standalone.yml,deploy/.env,deploy/nginx.prod-standalone.conf"
-          target: "/opt/tribaloriginlanding-prod-standalone"
+          target: "/opt/my-portfolio-prod-standalone"
           strip_components: 1
 
       - name: Check for SSL cert secrets
@@ -225,11 +225,11 @@ jobs:
           envs: CF_ORIGIN_CERT,CF_ORIGIN_KEY
           script: |
             set -e
-            mkdir -p /opt/tribaloriginlanding-prod-standalone/ssl
-            printf '%s\n' "$CF_ORIGIN_CERT" > /opt/tribaloriginlanding-prod-standalone/ssl/cloudflare-origin.pem
-            printf '%s\n' "$CF_ORIGIN_KEY" > /opt/tribaloriginlanding-prod-standalone/ssl/cloudflare-origin.key
-            chmod 600 /opt/tribaloriginlanding-prod-standalone/ssl/cloudflare-origin.key
-            chmod 644 /opt/tribaloriginlanding-prod-standalone/ssl/cloudflare-origin.pem
+            mkdir -p /opt/my-portfolio-prod-standalone/ssl
+            printf '%s\n' "$CF_ORIGIN_CERT" > /opt/my-portfolio-prod-standalone/ssl/cloudflare-origin.pem
+            printf '%s\n' "$CF_ORIGIN_KEY" > /opt/my-portfolio-prod-standalone/ssl/cloudflare-origin.key
+            chmod 600 /opt/my-portfolio-prod-standalone/ssl/cloudflare-origin.key
+            chmod 644 /opt/my-portfolio-prod-standalone/ssl/cloudflare-origin.pem
 
       - name: Deploy promoted image to standalone prod
         if: ${{ github.event.inputs.deployment_target == 'standalone' }}
@@ -240,7 +240,7 @@ jobs:
           key: ${{ secrets.PROD_STANDALONE_HETZNER_SSH_KEY }}
           script: |
             set -e
-            cd /opt/tribaloriginlanding-prod-standalone
+            cd /opt/my-portfolio-prod-standalone
 
             # Authenticate to GHCR so the server can pull private images
             echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -256,7 +256,7 @@ jobs:
 
       - name: Health check (prod)
         run: |
-          HEALTH_URL="https://tribalorigin.com"
+          HEALTH_URL="https://portfolio.tribalorigin.com"
           echo "Testing promoted site: $HEALTH_URL"
           echo "Waiting for containers to start..."
           for i in {1..12}; do

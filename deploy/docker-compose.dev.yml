@@ -12,6 +12,13 @@ services:
       - "traefik.http.routers.app-dev.entrypoints=websecure"
       - "traefik.http.routers.app-dev.tls.certresolver=letsencrypt"
       - "traefik.http.services.app-dev.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.redirect-to-my-portfolio-dev.redirectregex.regex=^https?://[^/]+/(.*)"
+      - "traefik.http.middlewares.redirect-to-my-portfolio-dev.redirectregex.replacement=https://portfolio.dev.tribalorigin.com/$${1}"
+      - "traefik.http.middlewares.redirect-to-my-portfolio-dev.redirectregex.permanent=true"
+      - "traefik.http.routers.app-dev-redirect.rule=Host(`dev.tribalorigin.com`)"
+      - "traefik.http.routers.app-dev-redirect.entrypoints=websecure"
+      - "traefik.http.routers.app-dev-redirect.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.app-dev-redirect.middlewares=redirect-to-my-portfolio-dev"
     volumes:
       - ./nginx.dev.conf:/etc/nginx/conf.d/default.conf:ro
     networks:

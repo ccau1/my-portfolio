@@ -112,10 +112,11 @@ This ensures dev, staging, and prod states remain isolated even with remote stor
 
 | Resource | Purpose |
 |----------|---------|
-| `hcloud_server.app` | Hetzner Cloud server (`tribaloriginlanding`) |
+| `hcloud_server.app` | Hetzner Cloud server (`my-portfolio`) |
 | `hcloud_firewall.web` | Firewall allowing 22, 80, 443 |
 | `hcloud_ssh_key.deploy` | SSH key for server access |
-| `cloudflare_record.app` | DNS A record for `tribalorigin.com` |
+| `cloudflare_record.root` | DNS A record for `tribalorigin.com` |
+| `cloudflare_record.portfolio` | DNS A record for `portfolio.tribalorigin.com` |
 | `cloudflare_origin_ca_certificate.app` | Cloudflare Origin CA certificate |
 | `local_file.app_cert` / `app_key` | Writes cert + key to `./ssl/` |
 

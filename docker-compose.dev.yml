@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: dev
-    container_name: portfolio-web-dev
+    container_name: my-portfolio-web-dev
     ports:
       - "5173:5173"
     volumes:

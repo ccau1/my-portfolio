@@ -12,6 +12,7 @@ output "domains" {
   description = "DNS records created in Cloudflare"
   value = var.cloudflare_zone_id != "" ? [
     "tribalorigin.com",
+    "portfolio.tribalorigin.com",
   ] : []
 }
 
