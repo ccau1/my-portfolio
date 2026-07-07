@@ -75,7 +75,7 @@ jobs:
           mkdir -p deploy
           cat > deploy/.env <<EOF
           DOMAIN_STAGING=portfolio.staging.tribalorigin.com
-          $(printf '%s\n' "${{ secrets.ENV_FILE }}" | grep -vi '^[[:space:]]*APP_IMAGE=')
+          $(printf '%s\n' "${{ secrets.ENV_FILE }}" | grep -viE '^[[:space:]]*(APP_IMAGE|DOMAIN_|HEALTH_URL)=')
           EOF
 
       - name: Copy compose & nginx to staging server
@@ -153,7 +153,7 @@ jobs:
           mkdir -p deploy
           cat > deploy/.env <<EOF
           DOMAIN_PROD=portfolio.tribalorigin.com
-          $(printf '%s\n' "${{ secrets.ENV_FILE }}" | grep -vi '^[[:space:]]*APP_IMAGE=')
+          $(printf '%s\n' "${{ secrets.ENV_FILE }}" | grep -viE '^[[:space:]]*(APP_IMAGE|DOMAIN_|HEALTH_URL)=')
           EOF
 
       # ── Shared production server (default) ────────────────────────

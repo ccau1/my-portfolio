@@ -66,7 +66,7 @@ jobs:
           mkdir -p deploy
           cat > deploy/.env <<EOF
           DOMAIN_DEV=portfolio.dev.tribalorigin.com
-          ${{ secrets.ENV_FILE }}
+          $(printf '%s\n' "${{ secrets.ENV_FILE }}" | grep -viE '^[[:space:]]*(APP_IMAGE|DOMAIN_|HEALTH_URL)=')
           EOF
 
       - name: Copy compose & nginx to dev server
